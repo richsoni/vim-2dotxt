@@ -11,3 +11,55 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal formatoptions-=tw formatoptions+=cqnlj
 setlocal suffixesadd=.txt
+
+function! s:TodoToggleComplete()
+  if matchstr(getline(line(".")), '^[xX].*$') != ''
+    execute 's/[xX]//'
+  else
+    execute 's/\(.*\)/x\1/'
+  endif
+endfunction
+
+function! s:TodoTogglePriorityUp()
+  let line=getline(line("."))
+  if col('.') <= matchend(line, '(\a\?)\|\S', 0)
+    if matchstr(line, '[\s?]*([A])', 0) != ''
+      execute 's/(A)/(B)/'
+    elseif matchstr(line, '[\s?]*([B])', 0) != ''
+      execute 's/(B)/(C)/'
+    elseif matchstr(line, '[\s?]*([C])', 0) != ''
+      execute 's/(C)/(D)/'
+    elseif matchstr(line, '[\s?]*([D])', 0) != ''
+      execute 's/(D)\s*\(\S\)/\1/'
+    else
+      execute 's/\([^x\s]\)/(A) \1/'
+    endif
+  else
+    execute 'normal! '
+  endif
+  echo('')
+endfunction
+
+function! s:TodoTogglePriorityDown()
+  let line=getline(line("."))
+  if col('.') <= matchend(line, '(\a\?)\|\S', 0)
+    if matchstr(line, '[\s?]*([A])', 0) != ''
+      execute 's/(A)\s*\(\S\)/\1/'
+    elseif matchstr(line, '[\s?]*([B])', 0) != ''
+      execute 's/(B)/(A)/'
+    elseif matchstr(line, '[\s?]*([C])', 0) != ''
+      execute 's/(C)/(B)/'
+    elseif matchstr(line, '[\s?]*([D])', 0) != ''
+      execute 's/(D)/(C)/'
+    else
+      execute 's/\([^x\s]\)/(D) \1/'
+    endif
+  else
+    execute 'normal! '
+  endif
+  echo('')
+endfunction
+
+nnoremap <space><space> :call <SID>TodoToggleComplete()<cr>
+nnoremap <C-A> :call <SID>TodoTogglePriorityUp()<cr>
+nnoremap <C-X> :call <SID>TodoTogglePriorityDown()<cr>
