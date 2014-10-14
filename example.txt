@@ -1,0 +1,7 @@
+(A) Priority A
+(B) Priority B
+(C) Priority C
+(D) Priority D
+(W) Priority W
+
+x(A) Priority X
