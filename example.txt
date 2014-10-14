@@ -1,7 +1,7 @@
-(A) Priority A
+(A) Priority A @operator +he/llo
 (B) Priority B
 (C) Priority C
 (D) Priority D
-(W) Priority W
+(W) Priority W +hello @operator
 
-x(A) Priority X
+x(A) Priority X +hello
