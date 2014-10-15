@@ -89,3 +89,4 @@ command! -nargs=1 -complete=custom,TwoDoIsolateComplete TwoDoIsolate call s:TwoD
 nnoremap <C-K> :call <SID>TwoDoJoin()<cr>
 nnoremap <C-J> :TwoDoIsolate 
 nnoremap K :call <SID>TwoDoBubbleOut()<cr>
+nnoremap g} vip:sort<cr>
