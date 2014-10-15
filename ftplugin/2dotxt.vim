@@ -21,9 +21,7 @@ function! s:TwoDoToggleComplete()
 endfunction
 
 
-function! s:TwoDoPluck(expr)
-
-
+function! s:TwoDoIsolate(expr)
   execute "normal!Oj"
   execute "normal!O"
   execute "g/".a:expr."/m".line('.').'-1'
@@ -72,11 +70,22 @@ function! s:TwoDoTogglePriorityDown()
   echo('')
 endfunction
 
-function! TwoDoPluckComplete(A,L,P)
+function! TwoDoIsolateComplete(A,L,P)
   return system('grep -oe "'.a:A.'\S*" ~/Dropbox/gtd/index | sort | uniq')
+endfunction
+
+function! s:TwoDoJoin()
+  silent execute 'normal! dippkdd'
+endfunction
+
+function! s:TwoDoBubbleOut()
+  silent execute 'normal! dd{P'
 endfunction
 
 nnoremap <space><space> :call <SID>TwoDoToggleComplete()<cr>
 nnoremap <C-A> :call <SID>TwoDoTogglePriorityUp()<cr>
 nnoremap <C-X> :call <SID>TwoDoTogglePriorityDown()<cr>
-command! -nargs=1 -complete=custom,TwoDoPluckComplete TwoDoPluck call s:TwoDoPluck(<q-args>)
+command! -nargs=1 -complete=custom,TwoDoIsolateComplete TwoDoIsolate call s:TwoDoIsolate(<q-args>)
+nnoremap <C-K> :call <SID>TwoDoJoin()<cr>
+nnoremap <C-J> :TwoDoIsolate 
+nnoremap K :call <SID>TwoDoBubbleOut()<cr>

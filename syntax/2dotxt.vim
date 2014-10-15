@@ -37,11 +37,11 @@ syn region todotxtWait start=/^\s*\(([Ww])\)/ end=/ / contains=ALL
 
 " #(W) hello
 " # anything
-syn match  todotxtComment "#.*" contains=ALL
+syn match  todotxtComment "#.*"
 
 " x(W) hello
 " X anything
-syn match  todotxtComplete "^\s*[xX].*" contains=ALL
+syn match  todotxtComplete "^\s*[xX].*"
 
 " (A) +project-name_here
 " +project
