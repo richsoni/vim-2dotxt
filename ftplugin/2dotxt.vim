@@ -12,7 +12,7 @@ setlocal commentstring=#\ %s
 setlocal formatoptions-=tw formatoptions+=cqnlj
 setlocal suffixesadd=.txt
 
-function! s:TodoToggleComplete()
+function! s:TwoDoToggleComplete()
   if matchstr(getline(line(".")), '^[xX].*$') != ''
     execute 's/[xX]//'
   else
@@ -20,7 +20,19 @@ function! s:TodoToggleComplete()
   endif
 endfunction
 
-function! s:TodoTogglePriorityUp()
+
+function! s:TwoDoPluck(expr)
+
+
+  execute "normal!Oj"
+  execute "normal!O"
+  execute "g/".a:expr."/m".line('.').'-1'
+  "unreverse grouping
+  execute "normal!k"
+  execute "g/".a:expr."/m".line('.')
+endfunction
+
+function! s:TwoDoTogglePriorityUp()
   let line=getline(line("."))
   if col('.') <= matchend(line, '(\a\?)\|\S', 0)
     if matchstr(line, '[\s?]*([A])', 0) != ''
@@ -40,7 +52,7 @@ function! s:TodoTogglePriorityUp()
   echo('')
 endfunction
 
-function! s:TodoTogglePriorityDown()
+function! s:TwoDoTogglePriorityDown()
   let line=getline(line("."))
   if col('.') <= matchend(line, '(\a\?)\|\S', 0)
     if matchstr(line, '[\s?]*([A])', 0) != ''
@@ -60,6 +72,11 @@ function! s:TodoTogglePriorityDown()
   echo('')
 endfunction
 
-nnoremap <space><space> :call <SID>TodoToggleComplete()<cr>
-nnoremap <C-A> :call <SID>TodoTogglePriorityUp()<cr>
-nnoremap <C-X> :call <SID>TodoTogglePriorityDown()<cr>
+function! TwoDoPluckComplete(A,L,P)
+  return system('grep -oe "'.a:A.'\S*" ~/Dropbox/gtd/index | sort | uniq')
+endfunction
+
+nnoremap <space><space> :call <SID>TwoDoToggleComplete()<cr>
+nnoremap <C-A> :call <SID>TwoDoTogglePriorityUp()<cr>
+nnoremap <C-X> :call <SID>TwoDoTogglePriorityDown()<cr>
+command! -nargs=1 -complete=custom,TwoDoPluckComplete TwoDoPluck call s:TwoDoPluck(<q-args>)
