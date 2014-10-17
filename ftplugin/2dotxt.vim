@@ -20,7 +20,6 @@ function! s:TwoDoToggleComplete()
   endif
 endfunction
 
-
 function! s:TwoDoIsolate(expr)
   execute "normal!Oj"
   execute "normal!O"
@@ -71,7 +70,7 @@ function! s:TwoDoTogglePriorityDown()
 endfunction
 
 function! TwoDoIsolateComplete(A,L,P)
-  return system('grep -oe "'.a:A.'\S*" ~/Dropbox/gtd/index | sort | uniq')
+  return system('grep -oe "'.a:A.'\S*" '.expand('%').' | sort | uniq')
 endfunction
 
 function! s:TwoDoJoin()
